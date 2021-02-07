@@ -1,30 +1,58 @@
-#CSRCS = dev/blkdev.c dev/devsd.c dev/devsd_discard.c dev/mbr.c devio.c
-#CSRCS += devsys.c filesys.c inode.c lowlevel-msp430x.c kdata.c
-#CSRCS += mm.c process.c simple.c start.c swap.c syscall_exec16.c
-#CSRCS += syscall_fs.c syscall_fs2.c syscall_fs3.c syscall_other.c
-#CSRCS += syscall_proc.c timer.c tty.c usermem.c devices.c 
-#CSRCS += devices_discard.c devsdspi.c devsdspi_discard.c
-#CSRCS += devtty.c devtty_discard.c libc.c main.c main_discard.c
+ASRCS = crt0.S tricks.S
+CSRCS = lowlevel-msp430x.c devices.c devices_discard.c devsdspi.c
+CSRCS += devsdspi_discard.c devtty.c devtty_discard.c libc.c
+CSRCS += main.c main_discard.c
 
-#	$(kernelversion.result)
-
-CSRCS = lowlevel-msp430x.c
-CROSS_CCOPTS = -I../include -I. -I../cpu-$(CPU)
-
-#ASRCS = crt0.S tricks.S
 
 COBJS = $(CSRCS:.c=$(BINEXT))
-#AOBJS = $(ASRCS:.s=$(BINEXT))
-OBJS  = $(COBJS) $(AOBJS)
-BINEXT = .o
+AOBJS = $(ASRCS:.S=$(BINEXT))
+DOBJS =
+CDOBJS = $(CDSRCS:.c=$(BINEXT))
+OBJS  = $(COBJS) $(AOBJS) $(DOBJS) $(CDOBJS)
+
+CROSS_CCOPTS += -I../include -I. -I../cpu-$(CPU)
+CROSS_CCOPTS += -I../dev/
+
+CROSS_CCOPTS += -Wno-int-to-pointer-cast
+CROSS_CCOPTS += -Wno-pointer-to-int-cast
+CROSS_CCOPTS += -fno-inline
+CROSS_CCOPTS += -fno-common
+CROSS_CCOPTS += -g
+
+CROSS_ASOPTS += -I..
+CROSS_ASOPTS += -g
 
 all: $(OBJS)
-	@echo objs $(OBJS)
-	@echo binext $(BINEXT)
 
-#$(COBJS): %$(BINEXT): %.c
-#	pwd
-#	$(CROSS_CC) $(CROSS_CCOPTS) -c $<
+$(COBJS): %$(BINEXT): %.c
+	$(CROSS_CC) $(CROSS_CCOPTS) -c $<
+
+$(CDOBJS): %$(BINEXT): %.c
+	$(CROSS_CC) $(CROSS_CCOPTS) $(CROSS_CC_SEGDISC) -c $<
+
+$(DOBJS): %$(BINEXT): ../dev/%.c
+	$(CROSS_CC) $(CROSS_CCOPTS) -c $<
+
+$(AOBJS): %$(BINEXT): %.S kernel.def ../kernel430x.def msp430fr5969.h
+	$(CROSS_AS) $(CROSS_ASOPTS) -c $< -o $*.o
+
+main.c: syscallmap.h
+	$(CROSS_CC) $(CROSS_CCOPTS) -c main.c
+
+# Do not change the order below without updating main.c.
+syscallmap.srcs = \
+	../syscall_exec16.c \
+	../syscall_fs.c \
+	../syscall_fs2.c \
+	../syscall_fs3.c \
+	../syscall_other.c \
+	../syscall_proc.c
+
+syscallmap.h: ../tools/map_syscall
+	../tools/map_syscall $(syscallmap.srcs) > syscallmap.h
 
 image:
 	@echo KERNEL $$@
+
+clean:
+	rm $(OBJS) syscallmap.h
