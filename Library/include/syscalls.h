@@ -9,7 +9,8 @@
 #endif
 #include <sys/stat.h>
 
-#include <sys/userstructs.h>
+#include "../../Kernel/include/userstructs.h"
+//#include <sys/userstructs.h>
 
 extern int errno;
 extern int syscall(int callno, ...);

@@ -1,12 +1,12 @@
 $(call find-makefile)
 
 kernelversion.ext = c
-kernelversion.srcs = $(abspath $(TOP)/Kernel/makeversion)
+kernelversion.srcs = $(abspath $(TOP)/Kernel/tools/makeversion)
 $(call build, kernelversion, nop)
 $(kernelversion.result):
 	@echo MAKEVERSION $@
 	$(hide) mkdir -p $(dir $@)
-	$(hide) (cd $(dir $@) && $(kernelversion.abssrcs) $(VERSION) $(SUBVERSION))
+	$(hide) (cd $(dir $@) && ln -s $(abspath $(TOP)/Kernel/include) && $(kernelversion.abssrcs) $(VERSION) $(SUBVERSION) $(PLATFORM))
 	$(hide) mv $(dir $@)/version.c $@
 
 syscallmap.ext = h

@@ -104,7 +104,6 @@ $(call build, filesystem, nop)
 $(filesystem.result): $(TOP)/Standalone/filesystem-src/populatefs.awk \
 		$(ucp.result) $(mkfs.result) $(fsck.result)
 	@echo FILESYSTEM $@
-	@mkdir -p $(dir $@)
 	$(hide) rm -f $@
 	$(hide) $(mkfs.result) $(FILESYSTEM_CROSSENDIAN) $@ $(FILESYSTEM_ISIZE) $(FILESYSTEM_FSIZE)
 	$(hide) echo $(standard_device_nodes) $(standard_files) $(FILESYSTEM) \
