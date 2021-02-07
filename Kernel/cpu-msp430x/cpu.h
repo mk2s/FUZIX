@@ -22,6 +22,7 @@ typedef uint16_t uaddr_t;
 typedef uint16_t uptr_t;
 typedef uint16_t usize_t;		/* Largest value passed by userspace */
 typedef int16_t susize_t;
+typedef int16_t ssize_t;
 typedef uint32_t clock_t;
 
 /* The MSP430 requires aligned accesses. (Annoying, it doesn't trap if you
@@ -118,4 +119,4 @@ typedef union {            /* this structure is endian dependent */
 
 #define no_cache_udata()
 
-#define CPUTYPE	CPUTYPE_MSP340X
+#define CPUTYPE	CPUTYPE_MSP430

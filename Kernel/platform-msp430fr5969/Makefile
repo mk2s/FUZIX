@@ -10,7 +10,7 @@ DOBJS =
 CDOBJS = $(CDSRCS:.c=$(BINEXT))
 OBJS  = $(COBJS) $(AOBJS) $(DOBJS) $(CDOBJS)
 
-CROSS_CCOPTS += -I../include -I. -I../cpu-$(CPU)
+CROSS_CCOPTS += -I../include -I../cpu-$(CPU)
 CROSS_CCOPTS += -I../dev/
 
 CROSS_CCOPTS += -Wno-int-to-pointer-cast
@@ -20,24 +20,24 @@ CROSS_CCOPTS += -fno-common
 CROSS_CCOPTS += -g
 
 CROSS_ASOPTS += -I..
-CROSS_ASOPTS += -g
+CROSS_ASOPTS += -g -c
 
 all: $(OBJS)
 
 $(COBJS): %$(BINEXT): %.c
-	$(CROSS_CC) $(CROSS_CCOPTS) -c $<
+	$(CROSS_CC) $(CROSS_CCOPTS) $<
 
 $(CDOBJS): %$(BINEXT): %.c
 	$(CROSS_CC) $(CROSS_CCOPTS) $(CROSS_CC_SEGDISC) -c $<
 
 $(DOBJS): %$(BINEXT): ../dev/%.c
-	$(CROSS_CC) $(CROSS_CCOPTS) -c $<
+	$(CROSS_CC) $(CROSS_CCOPTS) $<
 
 $(AOBJS): %$(BINEXT): %.S kernel.def ../kernel430x.def msp430fr5969.h
-	$(CROSS_AS) $(CROSS_ASOPTS) -c $< -o $*.o
+	$(CROSS_AS) $(CROSS_ASOPTS) $< -o $*.o
 
-main.c: syscallmap.h
-	$(CROSS_CC) $(CROSS_CCOPTS) -c main.c
+main.o: main.c syscallmap.h
+#	$(CROSS_CC) $(CROSS_CCOPTS) -c main.c
 
 # Do not change the order below without updating main.c.
 syscallmap.srcs = \
