@@ -358,7 +358,7 @@ void fuzix_main(void)
 	ticks_per_dsecond = TICKSPERSEC / 10;
 
 	kputs("Enabling interrupts ... ");
-	__hard_ei();		/* Physical interrupts on */
+	/*__hard_ei();		 Physical interrupts on */
 	kputs("ok.\n");
 
 	/* initialise hardware devices */
