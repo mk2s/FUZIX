@@ -36,9 +36,6 @@ typedef uint32_t clock_t;
 #define uputi  uputw			/* Copy user int type */
 #define ugeti  ugetw			/* between user and kernel */
 
-#define ei() \
-	asm volatile ("eint")
-
 #if 0
 static inline irqflags_t di(void)
 {
@@ -60,9 +57,6 @@ static inline void irqrestore(irqflags_t flags)
 		: "+g" (flags));
 }
 #endif
-
-extern irqflags_t di(void);
-extern void irqrestore(irqflags_t f);
 
 /* Allow a minimum of 512 bytes gap between stack and top of allocations */
 #define brk_limit() (udata.u_syscall_sp - 512)

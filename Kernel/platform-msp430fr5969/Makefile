@@ -11,8 +11,7 @@ DOBJS = $(DSRCS:.c=$(BINEXT))
 CDOBJS = $(CDSRCS:.c=$(BINEXT))
 OBJS  = $(COBJS) $(AOBJS) $(DOBJS) $(CDOBJS)
 
-CROSS_CCOPTS += -I../include -I../cpu-$(CPU)
-CROSS_CCOPTS += -I../dev/
+CROSS_CCOPTS = -ffunction-sections -fdata-sections -funit-at-a-time -mhwmult=auto -mmcu=msp430fr5969 -Wall -Werror=implicit-function-declaration --short-enums -Os -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fno-inline -fno-common -g -c -I. -I ../include -I ../cpu-$(CPU) -I../dev/
 
 
 CROSS_ASOPTS += -I..

@@ -85,14 +85,18 @@ proc trap_reboot_high
 	; Call C routines.
 	br #platform_init
 
-proc di
+proc __hard_ei
+	eint
+	ret
+	
+proc __hard_di
 	; Return the old interrupt status in r12.
 	mov SR, r12
 	and #~GIE, r12
 	bic.w #GIE, SR
 	ret
 
-proc irqrestore
+proc __hard_irqrestore
 	bic.w #GIE, SR           ; Ensure off
 	bis.w r12, SR            ; Mask in saved value
 	ret
