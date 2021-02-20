@@ -26,7 +26,7 @@ $(CDOBJS): %$(BINEXT): %.c
 	$(CROSS_CC) $(CROSS_CCOPTS) $(CROSS_CC_SEGDISC) -c $<
 
 $(DOBJS): %$(BINEXT): ../dev/%.c
-	$(CROSS_CC) $(CROSS_CCOPTS) $<
+	$(CROSS_CC) $(CROSS_CCOPTS) $< -o $*.o
 
 $(AOBJS): %$(BINEXT): %.S kernel.def ../kernel430x.def msp430fr5969.h
 	$(CROSS_AS) $(CROSS_ASOPTS) $< -o $*.o
@@ -51,7 +51,7 @@ image:
 	$(CROSS_LD) -s --relax -g -o ../fuzix.bin -Map=../fuzix.map --script=msp430fr5969.ld.out \
 	--start-group \
 	crt0.o main_discard.o tricks.o main.o lowlevel-msp430x.o devices.o devtty.o \
-	libc.o blkdev.o devsd.o devsdspi.o devsdspi_discard.o devices_discard.o devsd_discard.o devtty_discard.o mbr.o \
+	libc.o ../dev/blkdev.o ../dev/devsd.o devsdspi.o devsdspi_discard.o devices_discard.o ../dev/devsd_discard.o devtty_discard.o ../dev/mbr.o \
 	../kdata.o ../devio.o ../process.o ../devsys.o ../inode.o \
 	../usermem.o ../mm.o \
 	../syscall_exec16.o ../syscall_fs.o ../syscall_fs2.o ../syscall_fs3.o ../syscall_other.o ../syscall_proc.o ../filesys.o ../start.o ../simple.o ../swap.o ../tty.o ../timer.o \
