@@ -1,0 +1,53 @@
+ENTRY(_start)
+MEMORY
+{
+        USER : ORIGIN = (0x9180 + 0x0200), LENGTH = (0xff80 - (0x9180 + 0x0200))
+}
+SECTIONS
+{
+ .image : {
+  __image_start = .;
+  *(.header*)
+  *(.text*)
+  . = ALIGN(2);
+  __data_start = .;
+  *(.data*)
+  *(.rodata*)
+  *(.eh_frame*)
+  __data_end = .;
+ } > USER
+ __data_len = (__data_end - __data_start);
+ __user_page = (__image_start / 0x100);
+ .bss : {
+  . = ALIGN(2);
+  __bss_start = .;
+  *(.bss* COMMON)
+  __bss_end = .;
+ } > USER
+ __bss_len = (__bss_end - __bss_start);
+ .stab 0 : { *(.stab) }
+ .stabstr 0 : { *(.stabstr) }
+ .stab.excl 0 : { *(.stab.excl) }
+ .stab.exclstr 0 : { *(.stab.exclstr) }
+ .stab.index 0 : { *(.stab.index) }
+ .stab.indexstr 0 : { *(.stab.indexstr) }
+ .comment 0 : { *(.comment) }
+ .debug 0 : { *(.debug) }
+ .line 0 : { *(.line) }
+ .debug_srcinfo 0 : { *(.debug_srcinfo) }
+ .debug_sfnames 0 : { *(.debug_sfnames) }
+ .debug_aranges 0 : { *(.debug_aranges) }
+ .debug_pubnames 0 : { *(.debug_pubnames) }
+ .debug_info 0 : { *(.debug_info .gnu.linkonce.wi.*) }
+ .debug_abbrev 0 : { *(.debug_abbrev) }
+ .debug_line 0 : { *(.debug_line) }
+ .debug_frame 0 : { *(.debug_frame) }
+ .debug_str 0 : { *(.debug_str) }
+ .debug_loc 0 : { *(.debug_loc) }
+ .debug_macinfo 0 : { *(.debug_macinfo) }
+ .debug_weaknames 0 : { *(.debug_weaknames) }
+ .debug_funcnames 0 : { *(.debug_funcnames) }
+ .debug_typenames 0 : { *(.debug_typenames) }
+ .debug_varnames 0 : { *(.debug_varnames) }
+ /DISCARD/ : { *(.note.GNU-stack) }
+}
