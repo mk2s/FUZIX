@@ -1,5 +1,6 @@
 #
 APPS = util cmd sh games cave cpm v7games games as09 ld09 netd SmallC MWC
+APPS = util cmd sh
 
 .PHONY: $(APPS)
 
