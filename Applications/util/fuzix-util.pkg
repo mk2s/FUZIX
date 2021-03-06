@@ -56,7 +56,7 @@ f 0755 /bin/chgrp       chgrp
 f 0755 /bin/chown       chown
 f 0755 /bin/cksum       cksum
 f 0755 /bin/cut         cut
-f 0755 /bin/decomp16    decomp16
+#f 0755 /bin/decomp16    decomp16
 f 0755 /bin/dirname     dirname
 f 0755 /bin/dosread     dosread
 f 0755 /bin/du          du
@@ -82,7 +82,7 @@ f 0755 /bin/pagesize    pagesize
 f 0755 /bin/passwd      passwd
 f 0755 /bin/prtroot     prtroot
 f 0755 /bin/reboot      reboot
-f 0755 /bin/sed         sed
+#f 0755 /bin/sed         sed
 f 0755 /bin/sleep       sleep
 f 0755 /bin/sort        sort
 f 0755 /bin/sum         sum

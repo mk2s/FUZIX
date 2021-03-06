@@ -17,6 +17,8 @@ CROSS_CCOPTS = -ffunction-sections -fdata-sections -funit-at-a-time -mhwmult=aut
 CROSS_ASOPTS += -I..
 CROSS_ASOPTS += -g -c
 
+LIBGCCDIR = $(dir $(shell $(CROSS_CC) -print-libgcc-file-name))
+
 all: $(OBJS)
 
 $(COBJS): %$(BINEXT): %.c
@@ -46,7 +48,6 @@ syscallmap.srcs = \
 syscallmap.h: ../tools/map_syscall
 	../tools/map_syscall $(syscallmap.srcs) > syscallmap.h
 
-# figure out $$(dir $$($1.libgcc))
 image:
 	$(CROSS_LD) -s --relax -g -o ../fuzix.bin -Map=../fuzix.map --script=msp430fr5969.ld.out \
 	--start-group \
@@ -56,7 +57,7 @@ image:
 	../usermem.o ../mm.o \
 	../syscall_exec16.o ../syscall_fs.o ../syscall_fs2.o ../syscall_fs3.o ../syscall_other.o ../syscall_proc.o ../filesys.o ../start.o ../simple.o ../swap.o ../tty.o ../timer.o \
 	../version.o \
-    -L/home/mk2s/ti/gcc3/bin/../lib/gcc/msp430-elf/4.9.1 -lgcc \
+    -L$(LIBGCCDIR) -lgcc \
 	--end-group
 
 clean:
