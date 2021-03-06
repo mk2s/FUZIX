@@ -106,7 +106,7 @@ MEMORY {
   RESETVEC         : ORIGIN = 0xFFFE, LENGTH = 0x0002
   BSL              : ORIGIN = 0x1000, LENGTH = 0x0800
 
-  SRAM             : ORIGIN = 0x1C00, LENGTH = 0x0800
+  SRAM             : ORIGIN = 0x1C00, LENGTH = 0x0900
 
   USER             : ORIGIN = USER_BASE, LENGTH = 0xff80-USER_BASE
 
