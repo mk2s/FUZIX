@@ -1,9 +1,9 @@
 PLATFORM = msp430x
 CC = msp430-elf-gcc
 ASM = msp430-elf-as
-AR = msp430-elf-ar
+AR = msp430-elf-ar 
 LINKER = msp430-elf-ld
-CFLAGS = -ffunction-sections -fdata-sections -funit-at-a-time -mhwmult=auto -mmcu=msp430fr5969 -Wall -Werror=implicit-function-declaration --short-enums -Os -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fno-inline -fno-common -I../../../../Library/include -g -c
+CFLAGS =  -ffunction-sections -fdata-sections -funit-at-a-time -mhwmult=f5series -mmcu=msp430fr5969 -Wall -Werror=implicit-function-declaration --short-enums -Os -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fno-inline -fno-common -I../../../../Library/include -g -c
 export PLATFORM
 LINKER_OPT = -L../../../../Library/libs -g --gc-sections --relax -T ../../../../Build/platforms/msp430fr5969.ld.out -lcmsp430x -L$(LIBGCCDIR) -lgcc
 # cpp -P msp430fr5969.ld -I../../Build/platforms > msp430fr5969.ld.out
