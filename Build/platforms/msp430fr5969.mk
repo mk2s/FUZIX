@@ -8,7 +8,7 @@ A = a
 TARGETCC = msp430-elf-gcc
 TARGETCPP = msp430-elf-cpp -nostdinc -undef -P
 TARGETAS = msp430-elf-as
-TARGETAR = msp430-elf-ar
+TARGETAR = msp430-elf-ar 
 TARGETLD = msp430-elf-ld
 TARGETOBJCOPY = msp430-elf-objcopy
 
@@ -17,7 +17,7 @@ targetgcc.cflags += \
 	-ffunction-sections \
 	-fdata-sections \
 	-funit-at-a-time \
-	-mhwmult=auto \
+	-mhwmult=f5series \
 	-mmcu=msp430fr5969
 
 target-exe.ldflags += \

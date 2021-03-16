@@ -11,9 +11,7 @@ DOBJS = $(DSRCS:.c=$(BINEXT))
 CDOBJS = $(CDSRCS:.c=$(BINEXT))
 OBJS  = $(COBJS) $(AOBJS) $(DOBJS) $(CDOBJS)
 
-CROSS_CCOPTS = -ffunction-sections -fdata-sections -funit-at-a-time -mhwmult=auto -mmcu=msp430fr5969 -Wall -Werror=implicit-function-declaration --short-enums -Os -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fno-inline -fno-common -g -c -I. -I ../include -I ../cpu-$(CPU) -I../dev/
-
-
+CROSS_CCOPTS = -ffunction-sections -fdata-sections -funit-at-a-time -mhwmult=f5series -mmcu=msp430fr5969 -Wall -Werror=implicit-function-declaration --short-enums -Os -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fno-inline -fno-common -g -c -I. -I ../include -I ../cpu-$(CPU) -I../dev/
 CROSS_ASOPTS += -I..
 CROSS_ASOPTS += -g -c
 
@@ -52,7 +50,7 @@ msp430fr5969.ld.script: msp430fr5969.ld
 	cpp -P msp430fr5969.ld -I../../Build/platforms > msp430fr5969.ld.script
 
 image: msp430fr5969.ld.script
-	$(CROSS_LD) -s --relax -g -o ../fuzix.bin -Map=../fuzix.map --script=msp430fr5969.ld.script \
+	$(CROSS_LD)  --verbose --undefined __mspabi_mpyul_f5hw -lmul_f5 -s --relax -g -o ../fuzix.bin -Map=../fuzix.map --script=msp430fr5969.ld.script \
 	--start-group \
 	crt0.o main_discard.o tricks.o main.o lowlevel-msp430x.o devices.o devtty.o \
 	libc.o ../dev/blkdev.o ../dev/devsd.o devsdspi.o devsdspi_discard.o devices_discard.o ../dev/devsd_discard.o devtty_discard.o ../dev/mbr.o \
