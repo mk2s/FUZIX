@@ -1,0 +1,1 @@
+export CPU = msp430x

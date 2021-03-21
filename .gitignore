@@ -17,3 +17,12 @@ size.report
 # Build system output
 .obj
 bin
+*.elf
+make.out
+include
+Build/platforms/msp430fr5969.ld.out
+Kernel/platform-msp430fr5969/msp430fr5969.ld.script
+Kernel/platform-msp430fr5969/syscallmap.h
+Kernel/tools/map_syscall
+Library/libs/mmsp430x.lib
+Library/tools/

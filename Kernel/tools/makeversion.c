@@ -56,7 +56,7 @@ struct sysinfoblk {\n\
   uint16_t swapusedk;\n\
   char uname[%d];\n\
 };\n\
-\n", strlen(v) + strlen(sv) + strlen(p) + 9);
+\n", (int)(strlen(v) + strlen(sv) + strlen(p) + 9));
 }
 
 int main(int argc, char *argv[])
