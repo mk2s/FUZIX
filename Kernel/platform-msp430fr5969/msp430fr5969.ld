@@ -217,7 +217,7 @@ SECTIONS
 		*(.text.trap_reboot_high);
 		*(.text.blkdev_alloc);
 		*(.text.blkdev_scan);
-		"*/*_discard.o"(.text.* .rodata .rodata.*);
+		"*_discard.o"(.text.* .rodata .rodata.*);
 		"*/mbr.o"(.text.* .rodata .rodata.*);
 		"*/start.o"(.text.* .rodata .rodata.*);
     }
