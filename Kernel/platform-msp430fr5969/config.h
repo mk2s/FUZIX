@@ -76,3 +76,8 @@ extern int __swap_size_blocks;
 
 extern void platform_discard(void);
 
+#define CONFIG_SPLIT_UDATA
+#define UDATA_BLKS  1		/* One block of udata */
+#define UDATA_SIZE  512		/* 512 bytes of udata */
+#define platform_copyright()
+#define CONFIG_SD

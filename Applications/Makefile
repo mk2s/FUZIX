@@ -1,6 +1,7 @@
 #
-APPS = util cmd sh games cave cpm v7games games cursesgames \
-       as09 ld09 netd SmallC MWC asz80 flashrom ue cpmfs plato
+#APPS = util cmd sh games cave cpm v7games games cursesgames \
+#       as09 ld09 netd SmallC MWC asz80 flashrom ue cpmfs plato
+APPS = util cmd sh
 
 .PHONY: $(APPS)
 

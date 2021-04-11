@@ -1,0 +1,47 @@
+PLATFORM = msp430x
+CC = msp430-elf-gcc
+ASM = msp430-elf-as
+AR = msp430-elf-ar
+LINKER = msp430-elf-ld
+CFLAGS = -ffunction-sections -fdata-sections -funit-at-a-time -mhwmult=auto -mmcu=msp430fr5969 -Wall -Werror=implicit-function-declaration --short-enums -Os -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fno-inline -fno-common -I../../../../Library/include -g -c
+export PLATFORM
+LINKER_OPT = -L../../../../Library/libs -g --gc-sections --relax -T ../../../../Build/platforms/msp430fr5969.ld.out -lcmsp430x -L$(LIBGCCDIR) -lgcc
+# cpp -P msp430fr5969.ld -I../../Build/platforms > msp430fr5969.ld.out
+LIBGCCDIR = $(dir $(shell $(CC) -print-libgcc-file-name))
+CRT0 = ../../../../Library/libs/crt0_msp430x.o
+CRT0NS = ../../../../Library/libs/crt0nostdio_msp430x.o
+# For now while we get going. Really we want to use some kind of elf2zmagic
+# with relocs.
+TARGETOBJCOPY = msp430-elf-objcopy
+.SUFFIXES: .c .o
+
+SRCS  = args.c blok.c builtin.c cmd.c ctype.c error.c expand.c fault.c io.c \
+        macro.c main.c msg.c name.c print.c service.c setbrk.c stak.c \
+        string.c word.c xec.c glob.c
+
+INCS  = brkincr.h ctype.h defs.h mac.h mode.h name.h stak.h sym.h timeout.h
+
+OBJS = $(SRCS:.c=.o)
+
+all: sh
+
+$(OBJS): $(INCS)
+
+OBJS = $(SRCS:.c=.o)
+
+$(OBJS): %.o : %.c
+	$(CC) -c $(CFLAGS) $(COPT) $<
+
+sh: $(CRT0) $(OBJS)
+	$(LINKER) $^ -o $@.elf $(LINKER_OPT)
+	$(TARGETOBJCOPY) --output-target binary $@.elf $@
+
+size.report: $(APPS)
+	ls -l $^ > $@
+
+clean:
+	rm -f $(OBJS) $(APPS) $(SRCS:.c=) core *~ *.asm *.lst *.sym *.map *.noi *.lk *.ihx *.tmp *.bin size.report *.o
+
+rmbak:
+	rm -f *~ core
+

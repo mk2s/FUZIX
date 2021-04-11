@@ -1,3 +1,9 @@
+# mk2s Todo
+- I stubbed the interrupt stuff but needs closer look
+- kernel doesn't fit in linker script need to figure out what to do
+- newproc has been removed, but probably need to ajust the code that called that
+
+
 [![Build Status][travis-image]][travis-url]
 
 **FuzixOS**: Because Small Is Beautiful

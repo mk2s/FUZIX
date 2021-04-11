@@ -57,3 +57,7 @@ void doexec(uaddr_t start_addr)
 		  "g" (start_addr));
 }
 
+uint8_t sys_cpu = A_MSP340;
+uint8_t sys_cpu_feat = 0;
+void set_cpu_type(void) {}
+uint8_t sys_stubs[sizeof(struct exec)];

@@ -111,7 +111,7 @@ proc dofork
 
 	; Now create the child process. (r12 is still the process pointer.)
 
-	call #newproc
+	;; XXX mk2s - need to find out what happened call #newproc
 
 	; ...and we're ready to go.
 

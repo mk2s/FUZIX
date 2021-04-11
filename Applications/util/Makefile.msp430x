@@ -1,0 +1,144 @@
+PLATFORM = msp430x
+CC = msp430-elf-gcc
+ASM = msp430-elf-as
+AR = msp430-elf-ar
+LINKER = msp430-elf-ld
+CFLAGS = -ffunction-sections -fdata-sections -funit-at-a-time -mhwmult=auto -mmcu=msp430fr5969 -Wall -Werror=implicit-function-declaration --short-enums -Os -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fno-inline -fno-common -I../../Library/include -g -c
+export PLATFORM
+LINKER_OPT = -L../../Library/libs -g --gc-sections --relax -T ../../Build/platforms/msp430fr5969.ld.out -lcmsp430x -L$(LIBGCCDIR) -lgcc -lmul_f5
+LIBGCCDIR = $(dir $(shell $(CC) -print-libgcc-file-name))
+CRT0 = ../../Library/libs/crt0_msp430x.o
+CRT0NS = ../../Library/libs/crt0nostdio_msp430x.o
+
+# for stuff that gives gcc nightmares
+CC_NOOPT = $(CC_OPT)
+ASM_OPT = -o
+
+TARGETOBJCOPY = msp430-elf-objcopy
+.SUFFIXES: .c .o
+
+SRCSNS = \
+	basename.c \
+	cat.c \
+	chgrp.c \
+	chmod.c \
+	chown.c \
+	cmp.c \
+	cp.c \
+	date.c \
+	dirname.c \
+	false.c \
+	groups.c \
+	head.c \
+	init.c \
+	kill.c \
+	logname.c \
+	mkdir.c \
+	mkfifo.c \
+	mknod.c \
+	pagesize.c \
+	printenv.c \
+	prtroot.c \
+	pwd.c \
+	reboot.c \
+	rm.c \
+	rmdir.c \
+	sum.c \
+	sync.c \
+	tee.c \
+	telinit.c \
+	touch.c \
+	tr.c \
+	true.c \
+	while1.c \
+	whoami.c \
+	yes.c
+
+
+SRCS  = \
+	banner.c \
+	bd.c \
+	cal.c \
+	cksum.c \
+	cut.c \
+	dd.c \
+	df.c \
+	dosread.c \
+	du.c \
+	echo.c \
+	ed.c \
+	env.c \
+	factor.c \
+	fdisk.c \
+	fforth.c \
+	fgrep.c \
+	fsck.c \
+	grep.c \
+	id.c \
+	ll.c \
+	ls.c \
+	man.c \
+	mkfs.c \
+	mode.c \
+	more.c \
+	mount.c \
+	od.c \
+	passwd.c \
+	ps.c \
+	sleep.c \
+	sort.c \
+	stty.c \
+	su.c \
+	tar.c \
+	tail.c \
+	termcap.c \
+	umount.c \
+	uname.c \
+	uniq.c \
+	uptime.c \
+	uud.c \
+	uue.c \
+	wc.c \
+	which.c \
+	who.c \
+	write.c \
+	xargs.c
+
+SRCTC = tget.c
+
+SKIPPED = decomp.c sed.c ssh.c socktest.c
+
+
+OBJS = $(SRCS:.c=.o)
+OBJSNS = $(SRCSNS:.c=.o)
+OBJTC = $(SRCTC:.c=.o)
+
+APPS = $(OBJS:.o=)
+APPSNS = $(OBJSNS:.o=)
+APPTC = $(OBJTC:.o=)
+
+all: ../../Build/platforms/msp430fr5969.ld.out $(APPS) $(APPSNS) $(APPTC) size.report
+
+$(APPS): $(CRT0)
+$(APPSNS): $(CRT0NS)
+$(APPTC): $(CRT0)
+
+../../Build/platforms/msp430fr5969.ld.out: ../../Build/platforms/msp430fr5969.ld
+	cpp -P ../../Build/platforms/msp430fr5969.ld -I../../Build/platforms > ../../Build/platforms/msp430fr5969.ld.out
+
+$(APPS) $(APPSNS): %: %.o
+	$(LINKER) $^ -o $@.elf $(LINKER_OPT)
+	$(TARGETOBJCOPY) --output-target binary $@.elf $@
+
+$(APPTC): %: %.o
+	$(LINKER) $^ -o $@.elf -ltermcapmsp430x $(LINKER_OPT)
+	$(TARGETOBJCOPY) --output-target binary $@.elf $@
+
+size.report: $(APPS) $(APPSNS) $(APPTC)
+	ls -l $^ > $@
+
+clean:
+	rm -f $(OBJS) $(OBJSNS) $(APPS) $(APPSNS) $(APPTC) $(SRCS:.c=) core *~ *.asm *.lst *.sym *.map *.noi *.lk *.ihx *.tmp *.bin size.report *.o ../../Build/platforms/msp430fr5969.ld.out
+
+rmbak:
+	rm -f *~ core

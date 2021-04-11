@@ -7,7 +7,8 @@
  * 16-bit mode. Because all userspace addresses are below 64kB, it's
  * safe to cast a 16-bit value to a 20-bit address and vice verse.
  */
-
+#include <stdint-gcc.h>
+#include <stddef.h>
 typedef uintptr_t uint20_t;
 typedef intptr_t int20_t;
 
@@ -33,9 +34,6 @@ typedef uint32_t clock_t;
 #define ugetp  ugetw			/* between user and kernel */
 #define uputi  uputw			/* Copy user int type */
 #define ugeti  ugetw			/* between user and kernel */
-
-#define ei() \
-	asm volatile ("eint")
 
 #if 0
 static inline irqflags_t di(void)
